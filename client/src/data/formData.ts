@@ -20,7 +20,7 @@ export interface Imaging {
   date?: string;
   document?: File; // For the file input
   documentName?: string; // To store the path/name of the uploaded file from server
-  jointRegions?: string[]; // Array of selected joint regions (Left Knee, Right Knee)
+  jointRegions?: string[]; // Array of selected joint regions (Left Hip, Right Hip)
 }
 
 // New interface for a generic red flag item
@@ -59,7 +59,7 @@ export interface RedFlagWeightLossItem {
   amountKg?: number; 
 }
 
-// Interface for the "Red Flags" section - Simplified for Knee
+// Interface for the "Red Flags" section - Simplified for Hip
 export interface RedFlagsData {
   fevers: { present: boolean };
   unexplainedWeightLoss: RedFlagWeightLossItem;
@@ -130,20 +130,21 @@ export interface FormData {
   // Step 1: Onboarding
   consent: boolean;
 
-  // Step 2: Medical History - Knee Diagnoses
+  // Step 2: Medical History - Hip Diagnoses
   diagnoses: {
-    // Knee Diagnoses
-    kneeOsteoarthritis: boolean;
-    kneeRheumatoidArthritis: boolean;
-    aclRupture: boolean;
-    otherLigamentInjury: boolean;
-    otherLigamentInjuryDetails?: string;
-    patellaInstability: boolean;
-    meniscalTear: boolean;
-    kneeFracture: boolean;
-    kneeTendinitis: boolean;
-    otherKneeConditionSelected?: boolean;
-    otherKneeCondition?: string;
+    // Hip Diagnoses
+    hipOsteoarthritis: boolean;
+    hipRheumatoidArthritis: boolean;
+    labralTear: boolean;
+    hipDysplasia: boolean;
+    femoroacetabularImpingement: boolean;
+    hipFracture: boolean;
+    trochantericBursitis: boolean;
+    avascularNecrosis: boolean;
+    glutealTendonTear: boolean;
+    snappingHipSyndrome: boolean;
+    otherHipConditionSelected?: boolean;
+    otherHipCondition?: string;
     // Symptom details
     symptomDuration?: string; 
     symptomProgression?: 'Getting better' | 'Staying the same' | 'Getting worse' | ''; 
@@ -194,18 +195,19 @@ export const initialFormData: FormData = {
   consent: false,
 
   diagnoses: {
-    // Knee Diagnoses
-    kneeOsteoarthritis: false,
-    kneeRheumatoidArthritis: false,
-    aclRupture: false,
-    otherLigamentInjury: false,
-    otherLigamentInjuryDetails: '',
-    patellaInstability: false,
-    meniscalTear: false,
-    kneeFracture: false,
-    kneeTendinitis: false,
-    otherKneeConditionSelected: false,
-    otherKneeCondition: '',
+    // Hip Diagnoses
+    hipOsteoarthritis: false,
+    hipRheumatoidArthritis: false,
+    labralTear: false,
+    hipDysplasia: false,
+    femoroacetabularImpingement: false,
+    hipFracture: false,
+    trochantericBursitis: false,
+    avascularNecrosis: false,
+    glutealTendonTear: false,
+    snappingHipSyndrome: false,
+    otherHipConditionSelected: false,
+    otherHipCondition: '',
     // Symptom details
     symptomDuration: '',
     symptomProgression: '',
@@ -242,8 +244,8 @@ export const initialFormData: FormData = {
     weakness: { 
       present: false, 
       areas: {
-        'Knee': { selected: false },
-        'Leg': { selected: false },
+        'Hip': { selected: false },
+        'Thigh': { selected: false },
         'OtherArea': { selected: false },
       } 
     },

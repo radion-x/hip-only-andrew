@@ -525,16 +525,18 @@ const SummaryStep: React.FC = () => {
             <div className={cardContentBaseClass}>
               {(Object.values(formDataRef.current.diagnoses).some(val => val === true || (typeof val === 'string' && val.length > 0))) ? (
                 <ul className="list-disc list-inside space-y-1">
-                  {/* Knee Diagnoses */}
-                  {formDataRef.current.diagnoses.kneeOsteoarthritis && <li className={listItemBaseClass}>Knee Osteoarthritis</li>}
-                  {formDataRef.current.diagnoses.kneeRheumatoidArthritis && <li className={listItemBaseClass}>Knee Rheumatoid Arthritis</li>}
-                  {formDataRef.current.diagnoses.aclRupture && <li className={listItemBaseClass}>ACL Rupture</li>}
-                  {formDataRef.current.diagnoses.otherLigamentInjury && <li className={listItemBaseClass}>Other Ligament Injury{formDataRef.current.diagnoses.otherLigamentInjuryDetails ? `: ${formDataRef.current.diagnoses.otherLigamentInjuryDetails}` : ''}</li>}
-                  {formDataRef.current.diagnoses.patellaInstability && <li className={listItemBaseClass}>Patella Instability/Dislocation</li>}
-                  {formDataRef.current.diagnoses.meniscalTear && <li className={listItemBaseClass}>Meniscal Tear</li>}
-                  {formDataRef.current.diagnoses.kneeFracture && <li className={listItemBaseClass}>Knee Fracture</li>}
-                  {formDataRef.current.diagnoses.kneeTendinitis && <li className={listItemBaseClass}>Knee Tendinitis</li>}
-                  {formDataRef.current.diagnoses.otherKneeConditionSelected && formDataRef.current.diagnoses.otherKneeCondition && <li className={listItemBaseClass}>Other Knee Condition: {formDataRef.current.diagnoses.otherKneeCondition}</li>}
+                  {/* Hip Diagnoses */}
+                  {formDataRef.current.diagnoses.hipOsteoarthritis && <li className={listItemBaseClass}>Hip Osteoarthritis</li>}
+                  {formDataRef.current.diagnoses.hipRheumatoidArthritis && <li className={listItemBaseClass}>Hip Rheumatoid Arthritis</li>}
+                  {formDataRef.current.diagnoses.labralTear && <li className={listItemBaseClass}>Labral Tear</li>}
+                  {formDataRef.current.diagnoses.hipDysplasia && <li className={listItemBaseClass}>Hip Dysplasia</li>}
+                  {formDataRef.current.diagnoses.femoroacetabularImpingement && <li className={listItemBaseClass}>Femoroacetabular Impingement (FAI)</li>}
+                  {formDataRef.current.diagnoses.hipFracture && <li className={listItemBaseClass}>Hip Fracture</li>}
+                  {formDataRef.current.diagnoses.trochantericBursitis && <li className={listItemBaseClass}>Trochanteric Bursitis</li>}
+                  {formDataRef.current.diagnoses.avascularNecrosis && <li className={listItemBaseClass}>Avascular Necrosis (AVN)</li>}
+                  {formDataRef.current.diagnoses.glutealTendonTear && <li className={listItemBaseClass}>Gluteal Tendon Tear / Tendinopathy</li>}
+                  {formDataRef.current.diagnoses.snappingHipSyndrome && <li className={listItemBaseClass}>Snapping Hip Syndrome</li>}
+                  {formDataRef.current.diagnoses.otherHipConditionSelected && formDataRef.current.diagnoses.otherHipCondition && <li className={listItemBaseClass}>Other Hip Condition: {formDataRef.current.diagnoses.otherHipCondition}</li>}
                   
                   {/* Symptom Details */}
                   {formDataRef.current.diagnoses.mainSymptoms && <li className={`${listItemBaseClass} mt-2`}><span className="font-medium">Main Symptoms:</span> {formDataRef.current.diagnoses.mainSymptoms}</li>}
@@ -563,7 +565,7 @@ const SummaryStep: React.FC = () => {
                 ) : ( <p>No non-surgical treatments reported.</p> )}
               </div>
               <div>
-                <h4 className="font-medium text-gray-700 dark:text-gray-300 mb-1">Knee Surgery History:</h4>
+                <h4 className="font-medium text-gray-700 dark:text-gray-300 mb-1">Hip Surgery History:</h4>
                 {formDataRef.current.hadSurgery && formDataRef.current.surgeries.length > 0 ? (
                   <ul className="list-disc list-inside space-y-1">
                     {formDataRef.current.surgeries.map((surgery, index) => (<li key={index} className={listItemBaseClass}> {surgery.procedure} ({formatDate(surgery.date)})</li>))}

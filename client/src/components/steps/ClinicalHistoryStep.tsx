@@ -12,13 +12,9 @@ const ClinicalHistoryStep: React.FC = () => {
       ...formData.diagnoses,
       [diagnosisKey]: value,
     };
-    // If 'Other Knee' is being set to No, clear the text field
-    if (diagnosisKey === 'otherKneeConditionSelected' && !value) {
-      newDiagnoses.otherKneeCondition = '';
-    }
-    // If 'Other Ligament Injury' is being set to No, clear the details
-    if (diagnosisKey === 'otherLigamentInjury' && !value) {
-      newDiagnoses.otherLigamentInjuryDetails = '';
+    // If 'Other Hip' is being set to No, clear the text field
+    if (diagnosisKey === 'otherHipConditionSelected' && !value) {
+      newDiagnoses.otherHipCondition = '';
     }
     updateFormData({ diagnoses: newDiagnoses });
   };
@@ -52,7 +48,7 @@ const ClinicalHistoryStep: React.FC = () => {
     });
   };
 
-  const handleOtherTextChange = (field: 'otherKneeCondition' | 'otherLigamentInjuryDetails', value: string) => {
+  const handleOtherTextChange = (field: 'otherHipCondition', value: string) => {
     updateFormData({
       diagnoses: {
         ...formData.diagnoses,
@@ -61,17 +57,19 @@ const ClinicalHistoryStep: React.FC = () => {
     });
   };
 
-  // Knee Diagnoses
-  const kneeConditions = [
-    { id: 'kneeOsteoarthritis', label: 'Knee Osteoarthritis' },
-    { id: 'kneeRheumatoidArthritis', label: 'Rheumatoid Arthritis' },
-    { id: 'aclRupture', label: 'ACL Rupture' },
-    { id: 'otherLigamentInjury', label: 'Other Ligament Injury (Specify)' },
-    { id: 'patellaInstability', label: 'Patella Instability / Dislocation' },
-    { id: 'meniscalTear', label: 'Meniscal Tear' },
-    { id: 'kneeFracture', label: 'Fracture' },
-    { id: 'kneeTendinitis', label: 'Tendinitis' },
-    { id: 'otherKneeConditionSelected', label: 'Other Knee Condition' },
+  // Hip Diagnoses
+  const hipConditions = [
+    { id: 'hipOsteoarthritis', label: 'Hip Osteoarthritis' },
+    { id: 'hipRheumatoidArthritis', label: 'Rheumatoid Arthritis' },
+    { id: 'labralTear', label: 'Labral Tear' },
+    { id: 'hipDysplasia', label: 'Hip Dysplasia' },
+    { id: 'femoroacetabularImpingement', label: 'Femoroacetabular Impingement (FAI)' },
+    { id: 'hipFracture', label: 'Hip Fracture' },
+    { id: 'trochantericBursitis', label: 'Trochanteric Bursitis' },
+    { id: 'avascularNecrosis', label: 'Avascular Necrosis (AVN)' },
+    { id: 'glutealTendonTear', label: 'Gluteal Tendon Tear / Tendinopathy' },
+    { id: 'snappingHipSyndrome', label: 'Snapping Hip Syndrome' },
+    { id: 'otherHipConditionSelected', label: 'Other Hip Condition' },
   ];
 
   const renderConditionItem = (condition: { id: string; label: string }) => {
@@ -106,35 +104,18 @@ const ClinicalHistoryStep: React.FC = () => {
           </div>
         </div>
         
-        {/* Show text input for "Other Ligament Injury" */}
-        {condition.id === 'otherLigamentInjury' && formData.diagnoses.otherLigamentInjury && (
+        {/* Show text area for "Other Hip Condition" */}
+        {condition.id === 'otherHipConditionSelected' && formData.diagnoses.otherHipConditionSelected && (
           <div className="mt-2 mb-4 pl-4">
-            <label htmlFor="otherLigamentInjuryDetails" className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1">
-              Please specify the ligament injury:
-            </label>
-            <input
-              type="text"
-              id="otherLigamentInjuryDetails"
-              className="w-full px-3 py-2 border border-slate-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="e.g., PCL, MCL, LCL injury..."
-              value={formData.diagnoses.otherLigamentInjuryDetails || ''}
-              onChange={(e) => handleOtherTextChange('otherLigamentInjuryDetails', e.target.value)}
-            />
-          </div>
-        )}
-        
-        {/* Show text area for "Other Knee Condition" */}
-        {condition.id === 'otherKneeConditionSelected' && formData.diagnoses.otherKneeConditionSelected && (
-          <div className="mt-2 mb-4 pl-4">
-            <label htmlFor="otherKneeConditionText" className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1">
-              Please specify other knee condition(s):
+            <label htmlFor="otherHipConditionText" className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-1">
+              Please specify other hip condition(s):
             </label>
             <textarea
-              id="otherKneeConditionText"
+              id="otherHipConditionText"
               className="w-full h-20 px-3 py-2 border border-slate-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Describe other knee conditions here..."
-              value={formData.diagnoses.otherKneeCondition || ''}
-              onChange={(e) => handleOtherTextChange('otherKneeCondition', e.target.value)}
+              placeholder="Describe other hip conditions here..."
+              value={formData.diagnoses.otherHipCondition || ''}
+              onChange={(e) => handleOtherTextChange('otherHipCondition', e.target.value)}
             />
           </div>
         )}
@@ -151,11 +132,11 @@ const ClinicalHistoryStep: React.FC = () => {
           Have you been diagnosed with any of the following conditions? Select all that apply.
         </p>
 
-        {/* Knee Diagnoses Section */}
+        {/* Hip Diagnoses Section */}
         <div className="mt-6">
-          <h3 className="text-lg font-semibold text-blue-800 dark:text-blue-300 mb-4">Knee Diagnoses</h3>
+          <h3 className="text-lg font-semibold text-blue-800 dark:text-blue-300 mb-4">Hip Diagnoses</h3>
           <div className="space-y-4">
-            {kneeConditions.map((condition) => renderConditionItem(condition))}
+            {hipConditions.map((condition) => renderConditionItem(condition))}
           </div>
         </div>
 
@@ -170,7 +151,7 @@ const ClinicalHistoryStep: React.FC = () => {
             <textarea
               id="mainSymptoms"
               className="w-full h-24 px-3 py-2 border border-slate-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="e.g., knee pain, swelling, difficulty walking, stiffness, instability..."
+              placeholder="e.g., hip pain, groin pain, difficulty walking, stiffness, clicking, catching..."
               value={formData.diagnoses.mainSymptoms || ''}
               onChange={handleMainSymptomsChange}
             />

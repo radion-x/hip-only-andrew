@@ -778,14 +778,14 @@ const PainMappingStep = forwardRef((props, ref) => {
     }
   };
 
-// Weakness area options for knee patients
+// Weakness area options for hip patients
 const weaknessAreaOptions: { key: string, label: string }[] = [
-  { key: 'Knee', label: 'Knee' },
-  { key: 'Leg', label: 'Leg' },
+  { key: 'Hip', label: 'Hip' },
+  { key: 'Thigh', label: 'Thigh' },
   { key: 'OtherArea', label: 'Other' },
 ];
 
-// Simplified red flag handler for Knee assessment
+// Simplified red flag handler for Hip assessment
 const handleRedFlagChange = (
   flagName: 'fevers' | 'nightPain',
   isPresent: boolean
