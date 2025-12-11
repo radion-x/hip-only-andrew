@@ -633,6 +633,7 @@ const PainMappingStep = forwardRef((props, ref) => {
           view: view,
           formSessionId: formData.formSessionId 
         }),
+        credentials: 'include',
       });
   
       if (!response.ok) {

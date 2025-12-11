@@ -49,3 +49,4 @@ server/public/uploads/
 
 # Symlink to knee_actually project
 knee_actually/
+COOLIFY_ENV_VARIABLES.md

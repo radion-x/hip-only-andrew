@@ -180,6 +180,7 @@ const SummaryStep: React.FC = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(assessmentToSave),
+        credentials: 'include',
       });
       const saveData = await saveResponse.json();
       if (!saveResponse.ok) {
@@ -200,6 +201,7 @@ const SummaryStep: React.FC = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(emailPayload),
+        credentials: 'include',
       });
       const emailData = await emailResponse.json();
       if (!emailResponse.ok) {
@@ -255,6 +257,7 @@ const SummaryStep: React.FC = () => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(cleanFormDataForSummary),
+          credentials: 'include',
         });
 
         if (!response.ok) {
