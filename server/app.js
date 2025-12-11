@@ -50,15 +50,28 @@ const allowedOrigins = (process.env.ALLOWED_ORIGINS)
   ? process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim())
   : ['http://localhost:5173'];
 
+console.log('CORS Configuration:');
+console.log('  Allowed Origins:', allowedOrigins);
+console.log('  NODE_ENV:', process.env.NODE_ENV);
+
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow non-browser requests (mobile apps, Postman, etc.)
-    if (!origin) return callback(null, true);
+    console.log(`CORS request from origin: ${origin}`);
     
-    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
+    // Allow non-browser requests (mobile apps, Postman, etc.)
+    if (!origin) {
+      console.log('  -> Allowing request with no origin header');
+      return callback(null, true);
+    }
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      console.log(`  -> Origin ${origin} is in allowed list - ALLOWING`);
+      callback(null, true);
+    } else if (process.env.NODE_ENV !== 'production') {
+      console.log(`  -> Non-production mode - ALLOWING ${origin}`);
       callback(null, true);
     } else {
-      console.warn(`CORS blocked origin: ${origin}`);
+      console.warn(`  -> CORS BLOCKED: ${origin} not in allowed origins`);
       callback(new Error('Not allowed by CORS'));
     }
   },
@@ -87,6 +100,13 @@ if (process.env.NODE_ENV === 'production') {
   }
 }
 
+console.log('Session Configuration:');
+console.log('  sameSite:', sessionConfig.cookie.sameSite);
+console.log('  secure:', sessionConfig.cookie.secure);
+console.log('  domain:', sessionConfig.cookie.domain);
+console.log('  httpOnly:', sessionConfig.cookie.httpOnly);
+console.log('  proxy:', sessionConfig.proxy);
+
 app.use(session(sessionConfig));
 
 // --- STATIC FILE SERVING ---
@@ -113,14 +133,35 @@ const ensureAuthenticated = (req, res, next) => {
   res.status(401).json({ error: 'Unauthorized. Please log in.' });
 };
 app.post('/api/doctor/login', (req, res) => {
+  console.log('Login attempt:');
+  console.log('  Password received:', req.body.password ? '***' : 'MISSING');
+  console.log('  Expected password:', process.env.DASHBOARD_PASSWORD ? '***' : 'NOT SET');
+  console.log('  Session ID:', req.sessionID);
+  console.log('  Session before:', req.session);
+  
   if (req.body.password === process.env.DASHBOARD_PASSWORD) {
     req.session.isAuthenticated = true;
-    res.status(200).json({ message: 'Login successful.' });
+    console.log('  -> Login SUCCESSFUL, session after:', req.session);
+    
+    // Force session save to ensure it persists
+    req.session.save((err) => {
+      if (err) {
+        console.error('  -> Session save ERROR:', err);
+        return res.status(500).json({ error: 'Session save failed' });
+      }
+      console.log('  -> Session saved successfully');
+      res.status(200).json({ message: 'Login successful.' });
+    });
   } else {
+    console.log('  -> Login FAILED - password mismatch');
     res.status(401).json({ error: 'Invalid password.' });
   }
 });
 app.get('/api/doctor/check-auth', (req, res) => {
+  console.log('Auth check:');
+  console.log('  Session ID:', req.sessionID);
+  console.log('  Session:', req.session);
+  console.log('  isAuthenticated:', !!(req.session && req.session.isAuthenticated));
   res.status(200).json({ isAuthenticated: !!(req.session && req.session.isAuthenticated) });
 });
 app.post('/api/doctor/logout', (req, res) => {
