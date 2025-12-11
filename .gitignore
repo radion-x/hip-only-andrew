@@ -46,3 +46,6 @@ server/public/uploads/
 
 # Git
 .git/
+
+# Symlink to knee_actually project
+knee_actually/

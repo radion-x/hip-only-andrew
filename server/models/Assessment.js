@@ -11,18 +11,19 @@ const addressSchema = new mongoose.Schema({
 const assessmentSchema = new mongoose.Schema({
   consent: Boolean,
   diagnoses: {
-    // Knee Diagnoses
-    kneeOsteoarthritis: Boolean,
-    kneeRheumatoidArthritis: Boolean,
-    aclRupture: Boolean,
-    otherLigamentInjury: Boolean,
-    otherLigamentInjuryDetails: String,
-    patellaInstability: Boolean,
-    meniscalTear: Boolean,
-    kneeFracture: Boolean,
-    kneeTendinitis: Boolean,
-    otherKneeConditionSelected: Boolean,
-    otherKneeCondition: String,
+    // Hip Diagnoses
+    hipOsteoarthritis: Boolean,
+    hipRheumatoidArthritis: Boolean,
+    labralTear: Boolean,
+    hipDysplasia: Boolean,
+    femoroacetabularImpingement: Boolean,
+    hipFracture: Boolean,
+    trochantericBursitis: Boolean,
+    avascularNecrosis: Boolean,
+    glutealTendonTear: Boolean,
+    snappingHipSyndrome: Boolean,
+    otherHipConditionSelected: Boolean,
+    otherHipCondition: String,
     // Symptom details
     mainSymptoms: String,
     symptomDuration: String,

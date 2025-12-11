@@ -13,12 +13,12 @@ function generateComprehensivePrompt(formData) {
     }
 
     let comprehensivePrompt = `
-Analyze the following patient-provided knee evaluation data and generate a concise clinical summary.
+Analyze the following patient-provided hip evaluation data and generate a concise clinical summary.
 The patient's name is ${formData.demographics?.fullName || 'Not provided'} and their calculated age is ${patientAge} years.
 Consider all provided information, including age, symptoms, medical history, red flags, and treatment goals, to tailor the summary and any potential diagnostic considerations or observations.
 Focus on:
 - Key symptoms and their characteristics (location, nature, timing).
-- Relevant medical history (knee diagnoses, surgeries, treatments), including specific details for "other" conditions, main symptoms, symptom duration, and progression.
+- Relevant medical history (hip diagnoses, surgeries, treatments), including specific details for "other" conditions, main symptoms, symptom duration, and progression.
 - Interpretation of pain point data (locations, intensities).
 - Patient's stated goals for treatment.
 - Specific red flag symptoms reported, including all details.
@@ -37,28 +37,24 @@ Treatment Goals: ${formData.treatmentGoals || 'Not provided'}
     if (formData.diagnoses) {
         comprehensivePrompt += "\nMedical History & Symptoms:\n";
         
-        // Knee Diagnoses
-        let kneeConditions = [];
-        if (formData.diagnoses.kneeOsteoarthritis) kneeConditions.push("Knee Osteoarthritis");
-        if (formData.diagnoses.kneeRheumatoidArthritis) kneeConditions.push("Knee Rheumatoid Arthritis");
-        if (formData.diagnoses.aclRupture) kneeConditions.push("ACL Rupture");
-        if (formData.diagnoses.otherLigamentInjury) {
-            let ligamentDetail = "Other Ligament Injury";
-            if (formData.diagnoses.otherLigamentInjuryDetails) {
-                ligamentDetail += `: ${formData.diagnoses.otherLigamentInjuryDetails}`;
-            }
-            kneeConditions.push(ligamentDetail);
-        }
-        if (formData.diagnoses.patellaInstability) kneeConditions.push("Patella Instability/Dislocation");
-        if (formData.diagnoses.meniscalTear) kneeConditions.push("Meniscal Tear");
-        if (formData.diagnoses.kneeFracture) kneeConditions.push("Knee Fracture");
-        if (formData.diagnoses.kneeTendinitis) kneeConditions.push("Knee Tendinitis");
-        if (formData.diagnoses.otherKneeConditionSelected && formData.diagnoses.otherKneeCondition) {
-            kneeConditions.push(`Other Knee Condition: ${formData.diagnoses.otherKneeCondition}`);
+        // Hip Diagnoses
+        let hipConditions = [];
+        if (formData.diagnoses.hipOsteoarthritis) hipConditions.push("Hip Osteoarthritis");
+        if (formData.diagnoses.hipRheumatoidArthritis) hipConditions.push("Hip Rheumatoid Arthritis");
+        if (formData.diagnoses.labralTear) hipConditions.push("Labral Tear");
+        if (formData.diagnoses.hipDysplasia) hipConditions.push("Hip Dysplasia");
+        if (formData.diagnoses.femoroacetabularImpingement) hipConditions.push("Femoroacetabular Impingement (FAI)");
+        if (formData.diagnoses.hipFracture) hipConditions.push("Hip Fracture");
+        if (formData.diagnoses.trochantericBursitis) hipConditions.push("Trochanteric Bursitis");
+        if (formData.diagnoses.avascularNecrosis) hipConditions.push("Avascular Necrosis (AVN)");
+        if (formData.diagnoses.glutealTendonTear) hipConditions.push("Gluteal Tendon Tear / Tendinopathy");
+        if (formData.diagnoses.snappingHipSyndrome) hipConditions.push("Snapping Hip Syndrome");
+        if (formData.diagnoses.otherHipConditionSelected && formData.diagnoses.otherHipCondition) {
+            hipConditions.push(`Other Hip Condition: ${formData.diagnoses.otherHipCondition}`);
         }
 
-        if (kneeConditions.length > 0) {
-            comprehensivePrompt += `Knee Diagnoses: ${kneeConditions.join(', ')}\n`;
+        if (hipConditions.length > 0) {
+            comprehensivePrompt += `Hip Diagnoses: ${hipConditions.join(', ')}\n`;
         }
         if (formData.diagnoses.mainSymptoms) {
             comprehensivePrompt += `Main Symptoms: ${formData.diagnoses.mainSymptoms}\n`;
@@ -152,12 +148,12 @@ Treatment Goals: ${formData.treatmentGoals || 'Not provided'}
     }
 
     if (formData.surgeries && formData.surgeries.length > 0 && formData.hadSurgery) {
-        comprehensivePrompt += "\nKnee Surgical History:\n";
+        comprehensivePrompt += "\nHip Surgical History:\n";
         formData.surgeries.forEach(surgery => {
             comprehensivePrompt += `- Procedure: ${surgery.procedure || 'N/A'}, Date: ${surgery.date || 'N/A'}, Surgeon: ${surgery.surgeon || 'N/A'}, Hospital: ${surgery.hospital || 'N/A'}\n`;
         });
     } else if (formData.hadSurgery === false) {
-        comprehensivePrompt += "\nKnee Surgical History: No surgical history reported.\n";
+        comprehensivePrompt += "\nHip Surgical History: No surgical history reported.\n";
     }
 
     if (formData.imaging && formData.imaging.some(img => img.hadStudy)) {

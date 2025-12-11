@@ -1,8 +1,8 @@
-# Knee IQ Assessment Tool - Copilot Instructions
+# Hip IQ Assessment Tool - Copilot Instructions
 
 ## Architecture Overview
 
-This is a full-stack medical assessment application with a React/TypeScript frontend and Node.js/Express backend for knee condition evaluations.
+This is a full-stack medical assessment application with a React/TypeScript frontend and Node.js/Express backend for hip condition evaluations.
 
 **Frontend:** `/client/` - React 18 + TypeScript + Vite + Tailwind CSS  
 **Backend:** `/server/` - Node.js + Express + MongoDB + Anthropic Claude API  

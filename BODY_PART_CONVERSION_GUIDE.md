@@ -1,10 +1,10 @@
 # Body Part Configuration Guide
 ## Medical Assessment App - Conversion Reference
 
-**STATUS: This app is currently configured for KNEE ONLY assessments.**
+**STATUS: This app is currently configured for HIP ONLY assessments.**
 
 This document provides detailed instructions for converting this medical assessment app 
-to different body parts (Shoulder, Hip, Spine, etc.) while maintaining 
+to different body parts (Shoulder, Knee, Spine, etc.) while maintaining 
 the whole-body pain mapping feature.
 
 ---

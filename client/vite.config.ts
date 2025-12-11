@@ -9,13 +9,10 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      // string shorthand: '/foo' -> 'http://localhost:4567/foo'
-      // '/api': 'http://localhost:3001', 
-      // Using object syntax for more options if needed later:
+      // Proxy for local development only (production uses direct API calls)
       '/api': {
-        target: 'http://localhost:3889', // Your backend server address
-        changeOrigin: true, // Recommended for virtual hosted sites
-        // rewrite: (path) => path.replace(/^\/api/, '') // Optional: if your backend doesn't expect /api prefix
+        target: 'http://localhost:3000', // Backend server on port 3000
+        changeOrigin: true,
       }
     }
   }

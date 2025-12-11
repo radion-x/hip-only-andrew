@@ -106,10 +106,10 @@ router.post('/email/send-assessment', async (req, res) => {
 
     const adminHtmlContent = generateAssessmentEmailHTML({ ...req.body }, serverBaseUrl, 'admin');
     const adminMailOptions = {
-      from: `"Knee IQ Assessment" <${process.env.EMAIL_SENDER_ADDRESS}>`,
+      from: `"Hip IQ Assessment" <${process.env.EMAIL_SENDER_ADDRESS}>`,
       to: primaryRecipient,
       bcc: process.env.BCC_EMAIL_RECIPIENT_ADDRESS,
-      subject: `Knee Assessment Summary - ${formData.demographics?.fullName || 'N/A'} - ${subjectDate}`,
+      subject: `Hip Assessment Summary - ${formData.demographics?.fullName || 'N/A'} - ${subjectDate}`,
       html: adminHtmlContent,
       attachments: attachments
     };
@@ -118,9 +118,9 @@ router.post('/email/send-assessment', async (req, res) => {
     if (patientEmail && typeof patientEmail === 'string' && patientEmail.trim() !== '' && patientEmail !== primaryRecipient) {
       const patientHtmlContent = generateAssessmentEmailHTML({ ...req.body }, serverBaseUrl, 'patient');
       const patientMailOptions = {
-        from: `"Knee IQ Assessment" <${process.env.EMAIL_SENDER_ADDRESS}>`,
+        from: `"Hip IQ Assessment" <${process.env.EMAIL_SENDER_ADDRESS}>`,
         to: patientEmail,
-        subject: `Your Knee Assessment Summary - ${subjectDate}`,
+        subject: `Your Hip Assessment Summary - ${subjectDate}`,
         html: patientHtmlContent,
       };
       await transporter.sendMail(patientMailOptions);
@@ -154,7 +154,7 @@ function generateAssessmentEmailHTML(data, serverBaseUrl, recipientType) {
         </style>
       </head>
       <body>
-        <h1>Knee Assessment Report</h1>
+        <h1>Hip Assessment Report</h1>
   `;
 
   if (recipientType === 'patient') {

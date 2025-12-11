@@ -29,6 +29,12 @@ const tempUploadDir = path.join(baseUploadsDir, 'temp'); // Temporary directory 
 
 const port = process.env.SERVER_PORT || 3001;
 
+// --- TRUST PROXY (Critical for Traefik/Coolify) ---
+if (process.env.TRUST_PROXY === 'true') {
+  app.set('trust proxy', true);
+  console.log('Trust proxy enabled for reverse proxy deployment');
+}
+
 // --- DATABASE & MIDDLEWARE ---
 const mongoUri = process.env.MONGODB_URI;
 if (!mongoUri) {
@@ -39,18 +45,49 @@ if (!mongoUri) {
     .catch(err => console.error('MongoDB connection error:', err));
 }
 
-app.use(cors());
+// --- CORS CONFIGURATION ---
+const allowedOrigins = (process.env.ALLOWED_ORIGINS)
+  ? process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim())
+  : ['http://localhost:5173'];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow non-browser requests (mobile apps, Postman, etc.)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
+      callback(null, true);
+    } else {
+      console.warn(`CORS blocked origin: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true // CRITICAL: Allow cookies cross-origin
+}));
 app.use(express.json({ limit: '5mb' }));
-app.use(session({
+
+// --- SESSION CONFIGURATION ---
+const sessionConfig = {
   secret: process.env.SESSION_SECRET || 'fallback_secret_key_please_change',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: false, // Set to false since we're behind nginx proxy
     httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000
+    maxAge: 24 * 60 * 60 * 1000,
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    secure: process.env.NODE_ENV === 'production', // HTTPS only in production
   }
-}));
+};
+
+if (process.env.NODE_ENV === 'production') {
+  sessionConfig.proxy = true; // Trust reverse proxy
+  if (process.env.COOKIE_DOMAIN) {
+    sessionConfig.cookie.domain = process.env.COOKIE_DOMAIN;
+    console.log(`Cookie domain set to: ${process.env.COOKIE_DOMAIN}`);
+  }
+}
+
+app.use(session(sessionConfig));
 
 // --- STATIC FILE SERVING ---
 // Serve files from the session-specific directories
@@ -501,9 +538,9 @@ app.post('/api/email/send-assessment', async (req, res) => {
     const adminHtmlContent = generateAssessmentEmailHTML({ formData, aiSummary, recommendationText: formData.systemRecommendation, nextStep: formData.nextStep }, serverBaseUrl, 'admin');
     
     const adminMessageData = {
-      from: `Knee IQ Assessment <${process.env.EMAIL_SENDER_ADDRESS}>`,
+      from: `Hip IQ Assessment <${process.env.EMAIL_SENDER_ADDRESS}>`,
       to: [primaryRecipient],
-      subject: `Knee Assessment Summary - ${formData.demographics?.fullName || 'N/A'} - ${subjectDate}`,
+      subject: `Hip Assessment Summary - ${formData.demographics?.fullName || 'N/A'} - ${subjectDate}`,
       html: adminHtmlContent,
     };
     
@@ -526,9 +563,9 @@ app.post('/api/email/send-assessment', async (req, res) => {
       const patientHtmlContent = generateAssessmentEmailHTML({ formData, aiSummary, recommendationText: formData.systemRecommendation, nextStep: formData.nextStep }, serverBaseUrl, 'patient');
       
       const patientMessageData = {
-        from: `Knee IQ Assessment <${process.env.EMAIL_SENDER_ADDRESS}>`,
+        from: `Hip IQ Assessment <${process.env.EMAIL_SENDER_ADDRESS}>`,
         to: [patientEmail],
-        subject: `Your Knee Assessment Summary - ${subjectDate}`,
+        subject: `Your Hip Assessment Summary - ${subjectDate}`,
         html: patientHtmlContent,
       };
       
@@ -588,7 +625,7 @@ function generateAssessmentEmailHTML(data, serverBaseUrl, recipientType) {
         </style>
       </head>
       <body>
-        <h1>Knee Assessment Report</h1>
+        <h1>Hip Assessment Report</h1>
   `;
 
   if (recipientType === 'patient') {
